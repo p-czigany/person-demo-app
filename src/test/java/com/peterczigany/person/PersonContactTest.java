@@ -8,7 +8,7 @@ public class PersonContactTest {
 
   @Test
   void create() {
-    PersonContact contact = new Contact(null, PersonContact.ContactType.EMAIL, "holly@black.com");
+    PersonContact contact = new PersonContact(null, PersonContact.ContactType.EMAIL, "holly@black.com");
 
     assertThat(contact.getContactType()).isEqualTo(PersonContact.ContactType.EMAIL);
     assertThat(contact.getContactValue()).isEqualTo("holly@black.com");
