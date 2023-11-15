@@ -6,7 +6,7 @@ import com.peterczigany.person.model.PersonContact.ContactType;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-public class PersonTest {
+class PersonTest {
 
   @Test
   void create() {
