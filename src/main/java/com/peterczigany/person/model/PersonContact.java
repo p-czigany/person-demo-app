@@ -1,9 +1,23 @@
 package com.peterczigany.person.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "person_contact")
 public class PersonContact {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Enumerated(EnumType.STRING)
   private ContactType contactType;
+
   private String contactValue;
+
+  @ManyToOne
+  @JoinColumn(name = "person_id")
+  private Person person;
 
   public enum ContactType {
     PHONE,

@@ -1,12 +1,27 @@
 package com.peterczigany.person.model;
 
+import jakarta.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "person")
 public class Person {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String name;
+
+  @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
   private List<PersonContact> contacts;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "permanent_address_id")
   private Address permanentAddress;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "temporary_address_id")
   private Address temporaryAddress;
 
   public Person() {}
