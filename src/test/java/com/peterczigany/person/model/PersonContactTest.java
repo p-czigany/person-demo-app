@@ -1,4 +1,4 @@
-package com.peterczigany.person;
+package com.peterczigany.person.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,10 +1,10 @@
-package com.peterczigany.person;
+package com.peterczigany.person.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-public class AddressTest {
+class AddressTest {
 
   @Test
   void create() {

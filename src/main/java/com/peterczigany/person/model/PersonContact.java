@@ -1,4 +1,4 @@
-package com.peterczigany.person;
+package com.peterczigany.person.model;
 
 public class PersonContact {
   private Long id;
