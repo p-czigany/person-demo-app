@@ -1,4 +1,6 @@
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.peterczigany.person.PersonApplication;
@@ -23,5 +25,13 @@ class PersonApplicationAcceptanceTest {
     mockMvc
         .perform(get("/some/nonExistent/endpoint").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void testSuccessfulEmptyGetRequest() throws Exception {
+    mockMvc
+        .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(0)));
   }
 }
