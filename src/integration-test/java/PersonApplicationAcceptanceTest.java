@@ -5,32 +5,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.peterczigany.person.PersonApplication;
+import com.peterczigany.person.model.Person;
+import com.peterczigany.person.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.containers.MSSQLServerContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(classes = PersonApplication.class)
-@ActiveProfiles("integrationtest")
 @AutoConfigureMockMvc
-@Testcontainers
 class PersonApplicationAcceptanceTest {
   @Autowired private MockMvc mockMvc;
 
   @Autowired private PersonRepository repository;
-
-  @Container
-  private static final MSSQLServerContainer<SELF> sqlServerContainer =
-      new MSSQLServerContainer<>("mcr.microsoft.com/mssql/server")
-          .withDatabaseName("testdb")
-          .withUsername("sa")
-          .withPassword("password");
 
   @Test
   @SuppressWarnings("java:S2699")
