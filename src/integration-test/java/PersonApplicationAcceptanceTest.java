@@ -7,9 +7,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest(classes = PersonApplication.class)
 @AutoConfigureMockMvc
-public class PersonApplicationAcceptanceTest {
+class PersonApplicationAcceptanceTest {
   @Autowired private MockMvc mockMvc;
 
   @Test
+  @SuppressWarnings("java:S2699")
   void emptyTest() {}
 }
