@@ -1,4 +1,4 @@
-package com.peterczigany.person;
+package com.peterczigany.person.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 public class PersonRepositoryTest {
 
-  @Autowired PersonRepository repository;
+  @Autowired
+  PersonRepository repository;
 
   @Test
   void findAll() {

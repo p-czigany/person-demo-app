@@ -1,4 +1,4 @@
-package com.peterczigany.person;
+package com.peterczigany.person.repository;
 
 import com.peterczigany.person.model.Person;
 import org.springframework.data.repository.CrudRepository;
