@@ -1,4 +1,5 @@
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,11 +11,24 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.MSSQLServerContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest(classes = PersonApplication.class)
 @AutoConfigureMockMvc
+@Testcontainers
 class PersonApplicationAcceptanceTest {
   @Autowired private MockMvc mockMvc;
+
+  @Autowired private PersonRepository repository;
+
+  @Container
+  private static final MSSQLServerContainer<SELF> sqlServerContainer =
+      new MSSQLServerContainer<>("mcr.microsoft.com/mssql/server")
+          .withDatabaseName("testdb")
+          .withUsername("sa")
+          .withPassword("password");
 
   @Test
   @SuppressWarnings("java:S2699")
@@ -33,5 +47,20 @@ class PersonApplicationAcceptanceTest {
         .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(0)));
+  }
+
+  @Test
+  void testSuccessfulNonEmptyGetRequest() throws Exception {
+    Person person = new Person();
+    person.setName("Holly Black");
+    repository.save(person);
+
+    mockMvc
+        .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].name", is("Holly Black")));
+
+    repository.deleteAll();
   }
 }
