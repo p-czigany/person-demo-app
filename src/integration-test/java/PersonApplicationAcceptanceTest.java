@@ -103,6 +103,16 @@ class PersonApplicationAcceptanceTest {
             actualPerson -> assertThat(actualPerson.getName()).isEqualTo("Dolly White"));
   }
 
+  @Test
+  void testUnsuccessfulPatch() throws Exception {
+    mockMvc
+        .perform(
+            patch("/persons/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"name\": \"Dolly White\"}"))
+        .andExpect(status().isNotFound());
+  }
+
   private Person persistPersonWithName() {
     Person person = new Person();
     person.setName("Holly Black");
