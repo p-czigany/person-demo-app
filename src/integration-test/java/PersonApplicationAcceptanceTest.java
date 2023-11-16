@@ -37,7 +37,7 @@ class PersonApplicationAcceptanceTest {
     mockMvc
         .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(0)));
+        .andExpect(jsonPath("$._embedded.persons", hasSize(0)));
   }
 
   @Test
@@ -49,8 +49,24 @@ class PersonApplicationAcceptanceTest {
     mockMvc
         .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].name", is("Holly Black")));
+        .andExpect(jsonPath("$._embedded.persons", hasSize(1)))
+        .andExpect(jsonPath("$._embedded.persons[0].name", is("Holly Black")));
+
+    repository.deleteAll();
+  }
+
+  @Test
+  void testSuccessfulGetById() throws Exception {
+    Person person = new Person();
+    person.setName("Holly Black");
+    var personWithIdAssigned = repository.save(person);
+
+    mockMvc
+        .perform(
+            get("/persons/{id}", personWithIdAssigned.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.name", is("Holly Black")));
 
     repository.deleteAll();
   }
