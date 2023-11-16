@@ -70,4 +70,11 @@ class PersonApplicationAcceptanceTest {
 
     repository.deleteAll();
   }
+
+  @Test
+  void testUnsuccessfulGetById() throws Exception {
+    mockMvc
+        .perform(get("/persons/{id}", 1).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
 }
