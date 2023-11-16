@@ -1,6 +1,7 @@
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,5 +77,17 @@ class PersonApplicationAcceptanceTest {
     mockMvc
         .perform(get("/persons/{id}", 1).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
+  }
+
+  @Test
+  void testSuccessfulCreation() throws Exception {
+    mockMvc
+        .perform(
+            post("/persons")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"name\": \"Holly Black\"}"))
+        .andExpect(status().isCreated());
+
+    repository.deleteAll();
   }
 }
