@@ -49,7 +49,7 @@ class PersonApplicationAcceptanceTest {
 
   @Test
   void testSuccessfulNonEmptyGetRequest() throws Exception {
-    persistPersonWithName("Holly Black");
+    persistPersonWithName();
 
     mockMvc
         .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
@@ -60,7 +60,7 @@ class PersonApplicationAcceptanceTest {
 
   @Test
   void testSuccessfulGetById() throws Exception {
-    var personWithIdAssigned = persistPersonWithName("Holly Black");
+    var personWithIdAssigned = persistPersonWithName();
 
     mockMvc
         .perform(
@@ -89,7 +89,7 @@ class PersonApplicationAcceptanceTest {
 
   @Test
   void testSuccessfulPatch() throws Exception {
-    var persistedPerson = persistPersonWithName("Holly Black");
+    var persistedPerson = persistPersonWithName();
 
     mockMvc
         .perform(
@@ -103,9 +103,9 @@ class PersonApplicationAcceptanceTest {
             actualPerson -> assertThat(actualPerson.getName()).isEqualTo("Dolly White"));
   }
 
-  private Person persistPersonWithName(String name) {
+  private Person persistPersonWithName() {
     Person person = new Person();
-    person.setName(name);
+    person.setName("Holly Black");
     return repository.save(person);
   }
 }
