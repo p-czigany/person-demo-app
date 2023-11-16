@@ -49,9 +49,7 @@ class PersonApplicationAcceptanceTest {
 
   @Test
   void testSuccessfulNonEmptyGetRequest() throws Exception {
-    Person person = new Person();
-    person.setName("Holly Black");
-    repository.save(person);
+    putPersonToRepository("Holly Black");
 
     mockMvc
         .perform(get("/persons").contentType(MediaType.APPLICATION_JSON))
@@ -62,9 +60,7 @@ class PersonApplicationAcceptanceTest {
 
   @Test
   void testSuccessfulGetById() throws Exception {
-    Person person = new Person();
-    person.setName("Holly Black");
-    var personWithIdAssigned = repository.save(person);
+    var personWithIdAssigned = putPersonToRepository("Holly Black");
 
     mockMvc
         .perform(
@@ -89,5 +85,11 @@ class PersonApplicationAcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"name\": \"Holly Black\"}"))
         .andExpect(status().isCreated());
+  }
+
+  private Person putPersonToRepository(String name) {
+    Person person = new Person();
+    person.setName(name);
+    return repository.save(person);
   }
 }
