@@ -124,6 +124,13 @@ class PersonApplicationAcceptanceTest {
         .andExpect(status().isNoContent());
   }
 
+  @Test
+  void testUnsuccessfulDelete() throws Exception {
+    mockMvc
+        .perform(delete("/persons/{id}", 1).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
+
   private Person persistPersonWithName() {
     Person person = new Person();
     person.setName("Holly Black");
