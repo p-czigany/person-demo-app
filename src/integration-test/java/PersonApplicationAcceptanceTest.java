@@ -113,6 +113,17 @@ class PersonApplicationAcceptanceTest {
         .andExpect(status().isNotFound());
   }
 
+  @Test
+  void testSuccessfulDelete() throws Exception {
+    var persistedPerson = persistPersonWithName();
+
+    mockMvc
+        .perform(
+            delete("/persons/{id}", persistedPerson.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent());
+  }
+
   private Person persistPersonWithName() {
     Person person = new Person();
     person.setName("Holly Black");
