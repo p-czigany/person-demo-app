@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.peterczigany.person.PersonApplication;
 import com.peterczigany.person.model.Person;
 import com.peterczigany.person.repository.PersonRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,6 +22,11 @@ class PersonApplicationAcceptanceTest {
   @Autowired private MockMvc mockMvc;
 
   @Autowired private PersonRepository repository;
+
+  @AfterEach
+  public void tearDown() {
+    repository.deleteAll();
+  }
 
   @Test
   @SuppressWarnings("java:S2699")
@@ -52,8 +58,6 @@ class PersonApplicationAcceptanceTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$._embedded.persons", hasSize(1)))
         .andExpect(jsonPath("$._embedded.persons[0].name", is("Holly Black")));
-
-    repository.deleteAll();
   }
 
   @Test
@@ -68,8 +72,6 @@ class PersonApplicationAcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.name", is("Holly Black")));
-
-    repository.deleteAll();
   }
 
   @Test
@@ -87,7 +89,5 @@ class PersonApplicationAcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"name\": \"Holly Black\"}"))
         .andExpect(status().isCreated());
-
-    repository.deleteAll();
   }
 }
