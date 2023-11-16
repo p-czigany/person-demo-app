@@ -1,7 +1,6 @@
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,6 +84,18 @@ class PersonApplicationAcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"name\": \"Holly Black\"}"))
         .andExpect(status().isCreated());
+  }
+
+  @Test
+  void testSuccessfulOverwrite() throws Exception {
+    var persistedPerson = persistPersonWithName("Holly Black");
+
+    mockMvc
+        .perform(
+            put("/persons/{id}", persistedPerson.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"name\": \"Dolly White\"}"))
+        .andExpect(status().isNoContent());
   }
 
   private Person persistPersonWithName(String name) {
