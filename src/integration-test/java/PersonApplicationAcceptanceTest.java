@@ -1,3 +1,4 @@
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -87,15 +88,19 @@ class PersonApplicationAcceptanceTest {
   }
 
   @Test
-  void testSuccessfulOverwrite() throws Exception {
+  void testSuccessfulPatch() throws Exception {
     var persistedPerson = persistPersonWithName("Holly Black");
 
     mockMvc
         .perform(
-            put("/persons/{id}", persistedPerson.getId())
+            patch("/persons/{id}", persistedPerson.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"name\": \"Dolly White\"}"))
         .andExpect(status().isNoContent());
+
+    assertThat(repository.findById(persistedPerson.getId()))
+        .hasValueSatisfying(
+            actualPerson -> assertThat(actualPerson.getName()).isEqualTo("Dolly White"));
   }
 
   private Person persistPersonWithName(String name) {
